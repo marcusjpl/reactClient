@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Jumbotron, Button, Badge, ButtonToolbar } from 'react-bootstrap';
+import $ from 'jquery';
 import Hello from './componentes/Hello';
 import logo from './logo.svg';
 import './App.css';
