@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, Badge, ButtonToolbar } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import Ambiente from '../view/Ambiente';
+import Sistema from '../view/Sistema';
+import Inicial from '../view/Inicial';
 
 export default class Menu extends React.Component {
 
     render() {
          return (
+
+           <Router>
            <div className="col-sm-3 col-md-2 sidebar">
              <ul className="nav nav-sidebar">
                <li className="active"><a href="#">Overview <span className="sr-only">(current)</span></a></li>
-               <li><a href="#">Home</a></li>
-               <li><a href="#">Ambiente</a></li>
-               <li><a href="#">Sistema</a></li>
-               <li><a href="#">Propriedade</a></li>
-               <li><a href="#">Swagger</a></li>
+               <li><Link to={'/'}>Inicial</Link></li>
+               <li><Link to={'/ambiente'}>Ambiente</Link></li>
+               <li><Link to={'/sistema'}>Sistema</Link></li>
+               <li><Link to={'/propriedade'}>Propriedade</Link></li>
+               <li><Link to={'/swagger'}>Swagger</Link></li>
              </ul>
           {/*   <ul className="nav nav-sidebar">
                <li><a href="">Nav item</a></li>
@@ -26,7 +32,15 @@ export default class Menu extends React.Component {
                <li><a href="">One more nav</a></li>
                <li><a href="">Another nav item</a></li>
              </ul>*/}
+
+             <Switch>
+               <Route exact path="/" component={Inicial} />
+               <Route path="/ambiente" component={Ambiente} />
+               <Route path="/sistema" component={Sistema} />
+             </Switch>
+
            </div>
+         </Router>
         )
     }
 }

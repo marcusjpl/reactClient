@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Navbar, Jumbotron, Button, Badge, ButtonToolbar } from 'react-bootstrap';
 import $ from 'jquery';
 import Hello from './componentes/Hello';
-import logo from './logo.svg';
 import './App.css';
 
 
@@ -30,7 +29,7 @@ class App extends Component {
           <Button bsStyle="danger">Danger</Button>
           {/* Deemphasize a button by making it look like a link while maintaining button behavior */}
           <Button bsStyle="link">Link</Button>
-        </ButtonToolbar>;
+        </ButtonToolbar>
 
 
         <Hello message = "oi"></Hello>
