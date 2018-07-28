@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button,Glyphicon } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
 export default class Menu extends React.Component {
@@ -11,9 +11,9 @@ export default class Menu extends React.Component {
 
                <ul className="nav nav-sidebar">
                  {/*<li className="active"><a href="#">Overview <span className="sr-only">(current)</span></a></li>*/}
-                 <li><Link to={'/'}>Inicial</Link></li>
-                 <li><Link to={'/ambiente'}>Ambiente</Link></li>
-                 <li><Link to={'/sistema'}>Sistema</Link></li>
+                 <li><Link to={'/'}><Glyphicon glyph="home" />   Inicial</Link></li>
+                 <li><Link to={'/ambiente'}><Glyphicon glyph="plus" />   Ambiente</Link></li>
+                 <li><Link to={'/sistema'}><Glyphicon glyph="plus" />   Sistema</Link></li>
                </ul>
 
           </div>
