@@ -3,12 +3,12 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { BrowserRouter } from 'react-router-dom'
 import App from './App';
-import Header from './template/Header';
-import Menu from './template/Menu';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<Header />, document.getElementById('header'));
-ReactDOM.render(<Menu />, document.getElementById('menu'));
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>, document.getElementById('root'));
 registerServiceWorker();
