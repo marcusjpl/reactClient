@@ -6,9 +6,9 @@ import $ from 'jquery';
 class Inicial extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App-body">
 
-          <h1 className="page-header">Inicial</h1>
+          <h3 className="page-header">Inicial</h3>
 
           <Hello message = "oi"></Hello>
 
