@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, Form, ControlLabel, FormControl, Col, Checkbox, Panel, Table, Glyphicon } from 'react-bootstrap';
+import { Button, FormGroup, Form, ControlLabel, FormControl,
+  Col, Checkbox, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import $ from 'jquery';
 
 class Sistema extends Component {
@@ -9,7 +10,6 @@ class Sistema extends Component {
     this.state = {
       sistemas: [], nome:'', descricao:''
     };
-    this.salvar = this.salvar.bind(this);
     this.setNome = this.setNome.bind(this);
     this.setDescricao = this.setDescricao.bind(this);
   }
@@ -30,9 +30,7 @@ class Sistema extends Component {
   salvarSistema() {
     $.ajax({
       url:'http://localhost:7070/api/sistema',
-      contentType:'application/json',
-      dataType:'json',
-      type:'post',
+      contentType:'application/json', dataType:'json', type:'POST',
       data: JSON.stringify({nome:this.state.nome,descricao:this.state.descricao}),
         success: function(resposta){
           console.log(resposta);
@@ -48,9 +46,7 @@ class Sistema extends Component {
     let urlPath = 'http://localhost:7070/api/sistema/'+id;
     $.ajax({
       url: urlPath,
-      contentType:'application/json',
-      dataType:'json',
-      type:'DELETE',
+      contentType:'application/json',dataType:'json',type:'DELETE',
         success: function(resposta){
           console.log(resposta);
           this.carregarSistemas();
@@ -68,6 +64,11 @@ class Sistema extends Component {
   salvar(evento){
     evento.preventDefault();
     this.salvarSistema();
+  }
+
+  remover(evento) {
+    evento.preventDefault();
+    console.log(evento);
   }
 
   render() {
@@ -94,10 +95,10 @@ class Sistema extends Component {
                   </Col>
                 </FormGroup>
 
-                <FormGroup>
+                <ButtonGroup>
                     <Button bsStyle="primary" type="submit">Salvar</Button>
                     <Button>Limpar</Button>
-                </FormGroup>
+                </ButtonGroup>
             </Form>
           </Col>
 
@@ -124,7 +125,7 @@ class Sistema extends Component {
                                 <td>{s.nome}</td>
                                 <td>{s.descricao}</td>
                                 <td>
-                                  <Button bsStyle="primary" type="submit" onClick={() => this.removerSistema(s.id)}>
+                                  <Button bsStyle="primary" type="submit" onClick={() => this.remover()}>
                                     <Glyphicon glyph="trash" />
                                   </Button>
                                 </td>
@@ -141,7 +142,6 @@ class Sistema extends Component {
     );
   }
 
-
   setNome(evento){
     this.setState({nome:evento.target.value});
   }
@@ -151,5 +151,4 @@ class Sistema extends Component {
   }
 
 }
-
 export default Sistema;
