@@ -8,7 +8,7 @@ class Sistema extends Component {
   constructor() {
     super();
     this.state = {
-      sistemas: [], nome:'', descricao:''
+      sistemas: [], nome:'', descricao:'', id:''
     };
     this.setNome = this.setNome.bind(this);
     this.setDescricao = this.setDescricao.bind(this);
@@ -31,7 +31,9 @@ class Sistema extends Component {
     $.ajax({
       url:'http://localhost:7070/api/sistema',
       contentType:'application/json', dataType:'json', type:'POST',
-      data: JSON.stringify({nome:this.state.nome,descricao:this.state.descricao}),
+      data: JSON.stringify({id:this.state.id,
+                            nome:this.state.nome,
+                            descricao:this.state.descricao}),
         success: function(resposta){
           console.log(resposta);
           this.carregarSistemas();
@@ -71,6 +73,12 @@ class Sistema extends Component {
     this.removerSistema(id);
   }
 
+  editar(s, evento) {
+    this.setState({id:s.id});
+    this.setState({nome:s.nome});
+    this.setState({descricao:s.descricao});
+  }
+
   limpar() {
     this.setState({nome:''});
     this.setState({descricao:''});
@@ -107,7 +115,6 @@ class Sistema extends Component {
             </Form>
           </Col>
 
-
           <Col sm={6}>
               <Panel>
                 <Panel.Heading>Listagem</Panel.Heading>
@@ -133,6 +140,9 @@ class Sistema extends Component {
                                   <Button bsStyle="primary" onClick={this.remover.bind(this, s.id)} >
                                     <Glyphicon glyph="trash" />
                                   </Button>
+                                  <Button bsStyle="primary" onClick={this.editar.bind(this, s)} >
+                                    <Glyphicon glyph="edit" />
+                                  </Button>
                                 </td>
                               </tr>
                               );
@@ -153,6 +163,10 @@ class Sistema extends Component {
 
   setDescricao(evento){
     this.setState({descricao:evento.target.value});
+  }
+
+  setId(evento){
+    this.setState({id:evento.target.value});
   }
 
 }
