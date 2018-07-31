@@ -66,9 +66,14 @@ class Sistema extends Component {
     this.salvarSistema();
   }
 
-  remover(evento) {
+  remover(id, evento) {
     evento.preventDefault();
-    console.log(evento);
+    this.removerSistema(id);
+  }
+
+  limpar() {
+    this.setState({nome:''});
+    this.setState({descricao:''});
   }
 
   render() {
@@ -97,7 +102,7 @@ class Sistema extends Component {
 
                 <ButtonGroup>
                     <Button bsStyle="primary" type="submit">Salvar</Button>
-                    <Button>Limpar</Button>
+                    <Button onClick={this.limpar.bind(this)}>Limpar</Button>
                 </ButtonGroup>
             </Form>
           </Col>
@@ -125,13 +130,13 @@ class Sistema extends Component {
                                 <td>{s.nome}</td>
                                 <td>{s.descricao}</td>
                                 <td>
-                                  <Button bsStyle="primary" type="submit" onClick={() => this.remover()}>
+                                  <Button bsStyle="primary" onClick={this.remover.bind(this, s.id)} >
                                     <Glyphicon glyph="trash" />
                                   </Button>
                                 </td>
                               </tr>
                               );
-                            })
+                            }.bind(this))
                         }
                       </tbody>
                     </Table>
