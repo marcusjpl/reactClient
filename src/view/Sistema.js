@@ -8,7 +8,7 @@ class Sistema extends Component {
   constructor() {
     super();
     this.state = {
-      sistemas: [], nome:'', descricao:'', id:''
+      sistemas: [], sistema:{nome:'', descricao:'', id:''}
     };
     this.setNome = this.setNome.bind(this);
     this.setDescricao = this.setDescricao.bind(this);
@@ -50,7 +50,6 @@ class Sistema extends Component {
       url: urlPath,
       contentType:'application/json',dataType:'json',type:'DELETE',
         success: function(resposta){
-          console.log(resposta);
           this.carregarSistemas();
         }.bind(this),
         error: function(resposta){
@@ -80,6 +79,7 @@ class Sistema extends Component {
   }
 
   limpar() {
+    this.setState({id:''});
     this.setState({nome:''});
     this.setState({descricao:''});
   }
