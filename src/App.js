@@ -5,6 +5,7 @@ import {Switch, Route} from 'react-router-dom'
 import $ from 'jquery';
 import './App.css';
 
+import Alerta from './componentes/Alerta';
 import Header from './template/Header';
 import Menu from './template/Menu';
 import Ambiente from './view/Ambiente';
@@ -20,6 +21,7 @@ class App extends Component {
 
         <Header/>
         <Menu/>
+        <Alerta message="Mensagem blabla" show="true"/>
 
         <Switch>
           <Route exact path='/' component={Inicial}/>

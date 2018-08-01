@@ -1,8 +1,107 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, Form, ControlLabel, FormControl, Col, Checkbox, Panel, Table } from 'react-bootstrap';
+import { Button, FormGroup, Form, ControlLabel, FormControl,
+  Col, Checkbox, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import $ from 'jquery';
 
 class Ambiente extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      ambientes: [], sistemas: [], nome:'', descricao:'', id:'', sistema:{}
+    };
+    this.setNome = this.setNome.bind(this);
+    this.setDescricao = this.setDescricao.bind(this);
+    this.setSistema = this.setSistema.bind(this);
+  }
+
+  carregarAmbientes() {
+    $.ajax({
+      url: "http://localhost:7070/api/ambientes",
+      dataType: 'json',
+        success: function(resposta) {
+          this.setState({ambientes: resposta});
+        }.bind(this),
+        error: function(resposta){
+          console.log("erro");
+        }.bind(this)
+    });
+  }
+
+  carregarSistemas() {
+    $.ajax({
+      url: "http://localhost:7070/api/sistemas",
+      dataType: 'json',
+        success: function(resposta) {
+          this.setState({sistemas: resposta});
+        }.bind(this),
+        error: function(resposta){
+          console.log("erro");
+        }.bind(this)
+    });
+  }
+
+  salvarAmbiente() {
+    $.ajax({
+      url:'http://localhost:7070/api/ambiente',
+      contentType:'application/json', dataType:'json', type:'POST',
+      data: JSON.stringify({id:this.state.id,
+                            nome:this.state.nome,
+                            descricao:this.state.descricao,
+                            sistema:this.state.sistema}),
+        success: function(resposta){
+          console.log(resposta);
+          this.carregarAmbientes();
+          this.limpar();
+        }.bind(this),
+        error: function(resposta){
+          console.log("erro");
+        }
+    });
+  }
+
+  removerAmbiente(id) {
+    let urlPath = 'http://localhost:7070/api/ambiente/'+id;
+    $.ajax({
+      url: urlPath,
+      contentType:'application/json',dataType:'json',type:'DELETE',
+        success: function(resposta){
+          this.carregarAmbientes();
+        }.bind(this),
+        error: function(resposta){
+          console.log("erro");
+        }
+    });
+  }
+
+  componentDidMount() {
+    this.carregarAmbientes();
+    this.carregarSistemas();
+  }
+
+  salvar(evento){
+    evento.preventDefault();
+    this.salvarAmbiente();
+  }
+
+  remover(id, evento) {
+    evento.preventDefault();
+    this.removerAmbiente(id);
+  }
+
+  editar(a, evento) {
+    this.setState({id:a.id});
+    this.setState({nome:a.nome});
+    this.setState({descricao:a.descricao});
+    this.setState({sistema:a.sistema});
+  }
+
+  limpar() {
+    this.setState({id:''});
+    this.setState({nome:''});
+    this.setState({descricao:''});
+    this.setState({sistema:{}});
+  }
 
 
   render() {
@@ -12,26 +111,45 @@ class Ambiente extends Component {
           <h3 className="page-header">Ambiente</h3>
 
           <Col sm={4}>
-            <Form horizontal>
+            <Form horizontal onSubmit={this.salvar.bind(this)} method="post">
                 <FormGroup controlId="formHorizontalEmail">
                   <Col componentClass={ControlLabel} sm={3}>
                     Nome
                   </Col>
                   <Col sm={8}>
-                    <FormControl type="text" />
+                    <FormControl type="text" value={this.state.nome} onChange={this.setNome}/>
                   </Col>
 
                   <Col componentClass={ControlLabel} sm={3}>
                     Descrição
                   </Col>
                   <Col sm={8}>
-                    <FormControl type="text" />
+                    <FormControl type="text" value={this.state.descricao} onChange={this.setDescricao}/>
                   </Col>
+
+                  <Col componentClass={ControlLabel} sm={3}>
+                    Sistema
+                  </Col>
+                  <Col sm={8}>
+                    <FormControl componentClass="select" placeholder="Selecionar"
+                       value={this.state.sistema}
+                       onChange={this.setSistema}>
+                       <option></option>
+                      {
+                        this.state.sistemas.map(function(s){
+                          return (
+                            <option key={s.id}>{s.nome}</option>
+                            );
+                          }.bind(this))
+                      }
+                    </FormControl>
+                  </Col>
+
                 </FormGroup>
 
                 <FormGroup>
-                    <Button bsStyle="primary">Salvar</Button>
-                    <Button>Limpar</Button>
+                    <Button bsStyle="primary" type="submit">Salvar</Button>
+                    <Button onClick={this.limpar.bind(this)}>Limpar</Button>
                 </FormGroup>
             </Form>
           </Col>
@@ -44,26 +162,58 @@ class Ambiente extends Component {
                     <Table responsive>
                       <thead>
                         <tr>
-                          <th>#</th>
+                          <th>Id</th>
                           <th>Nome</th>
                           <th>Descrição</th>
+                          <th>Sistema</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>Table cell</td>
-                          <td>Table cell</td>
-                        </tr>
+                        {
+                          this.state.ambientes.map(function(a){
+                            return (
+                              <tr key={a.id}>
+                                <td>{a.id}</td>
+                                <td>{a.nome}</td>
+                                <td>{a.descricao}</td>
+                                <td>{a.sistema.nome}</td>
+                                <td>
+                                  <Button bsStyle="primary" onClick={this.remover.bind(this, a.id)} >
+                                    <Glyphicon glyph="trash" />
+                                  </Button>
+                                  <Button bsStyle="primary" onClick={this.editar.bind(this, a)} >
+                                    <Glyphicon glyph="edit" />
+                                  </Button>
+                                </td>
+                              </tr>
+                              );
+                            }.bind(this))
+                        }
                       </tbody>
                     </Table>
                 </Panel.Body>
               </Panel>
           </Col>
 
-
       </div>
     );
+  }
+
+  setSistema(evento){
+    this.setState({sistema:this.state.sistemas[evento.target.value]});
+  }
+
+  setNome(evento){
+    this.setState({nome:evento.target.value});
+  }
+
+  setDescricao(evento){
+    this.setState({descricao:evento.target.value});
+  }
+
+  setId(evento){
+    this.setState({id:evento.target.value});
   }
 }
 

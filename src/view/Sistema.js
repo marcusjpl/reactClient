@@ -35,7 +35,7 @@ class Sistema extends Component {
                             nome:this.state.nome,
                             descricao:this.state.descricao}),
         success: function(resposta){
-          console.log(resposta);  
+          console.log(resposta);
           this.carregarSistemas();
           this.limpar();
         }.bind(this),
