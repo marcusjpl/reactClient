@@ -8,7 +8,7 @@ class Ambiente extends Component {
   constructor() {
     super();
     this.state = {
-      ambientes: [], sistemas: [], nome:'', descricao:'', id:'', sistema:{}
+      ambientes: [], sistemas: [], nome:'', descricao:'', id:'', sistema:{}, sistemaId:''
     };
     this.setNome = this.setNome.bind(this);
     this.setDescricao = this.setDescricao.bind(this);
@@ -90,19 +90,12 @@ class Ambiente extends Component {
   }
 
   editar(a, evento) {
-    this.setState({id:a.id});
-    this.setState({nome:a.nome});
-    this.setState({descricao:a.descricao});
-    this.setState({sistema:a.sistema});
+    this.setState({id:a.id, nome:a.nome, descricao:a.descricao, sistema:a.sistema, sistemaId:a.sistema.id});
   }
 
   limpar() {
-    this.setState({id:''});
-    this.setState({nome:''});
-    this.setState({descricao:''});
-    this.setState({sistema:{}});
+    this.setState({id:'', nome:'',descricao:'',sistema:'', sistemaId:''});
   }
-
 
   render() {
     return (
@@ -132,13 +125,13 @@ class Ambiente extends Component {
                   </Col>
                   <Col sm={8}>
                     <FormControl componentClass="select" placeholder="Selecionar"
-                       value={this.state.sistema}
                        onChange={this.setSistema}>
-                       <option></option>
                       {
-                        this.state.sistemas.map(function(s){
+                        this.state.sistemas.map(function(s, index){
                           return (
-                            <option key={s.id}>{s.nome}</option>
+                            <option key={s.id} value={index}>
+                                {s.nome}
+                            </option>
                             );
                           }.bind(this))
                       }
@@ -201,7 +194,8 @@ class Ambiente extends Component {
   }
 
   setSistema(evento){
-    this.setState({sistema:this.state.sistemas[evento.target.value]});
+    this.setState({sistema:this.state.sistemas[evento.target.value],
+                  sistemaId:this.state.sistemas[evento.target.value].id});
   }
 
   setNome(evento){
