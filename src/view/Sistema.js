@@ -56,7 +56,7 @@ class Sistema extends Component {
         error: function(resposta){
           this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
           console.log("erro");
-        }
+        }.bind(this)
     });
   }
 
