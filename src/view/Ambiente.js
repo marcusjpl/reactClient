@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NotificationSystem from 'react-notification-system';
 import { Button, FormGroup, Form, ControlLabel, FormControl,
   Col, Checkbox, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import $ from 'jquery';
@@ -24,6 +25,7 @@ class Ambiente extends Component {
         }.bind(this),
         error: function(resposta){
           console.log("erro");
+          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
         }.bind(this)
     });
   }
@@ -37,6 +39,7 @@ class Ambiente extends Component {
         }.bind(this),
         error: function(resposta){
           console.log("erro");
+          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
         }.bind(this)
     });
   }
@@ -53,10 +56,12 @@ class Ambiente extends Component {
           console.log(resposta);
           this.carregarAmbientes();
           this.limpar();
+          this._showMessage.addNotification({message: 'Ambiente salvo com sucesso', level: 'success'});
         }.bind(this),
         error: function(resposta){
           console.log("erro");
-        }
+          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
+        }.bind(this)
     });
   }
 
@@ -67,10 +72,12 @@ class Ambiente extends Component {
       contentType:'application/json',dataType:'json',type:'DELETE',
         success: function(resposta){
           this.carregarAmbientes();
+          this._showMessage.addNotification({message: 'Ambiente removido com sucesso', level: 'success'});
         }.bind(this),
         error: function(resposta){
           console.log("erro");
-        }
+          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
+        }.bind(this)
     });
   }
 
@@ -100,7 +107,7 @@ class Ambiente extends Component {
   render() {
     return (
       <div className="App-body">
-
+          <NotificationSystem ref={n => this._showMessage = n} />
           <h3 className="page-header">Ambiente</h3>
 
           <Col sm={4}>

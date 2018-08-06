@@ -21,7 +21,6 @@ class App extends Component {
 
         <Header/>
         <Menu/>
-        <Alerta message="Mensagem blabla" show="true"/>
 
         <Switch>
           <Route exact path='/' component={Inicial}/>

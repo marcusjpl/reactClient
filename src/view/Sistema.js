@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import NotificationSystem from 'react-notification-system';
 import { Button, FormGroup, Form, ControlLabel, FormControl,
   Col, Checkbox, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import $ from 'jquery';
@@ -23,11 +24,23 @@ class Sistema extends Component {
         }.bind(this),
         error: function(resposta){
           console.log("erro");
+          this._showMessage.addNotification({message: resposta, level: 'error'});
         }.bind(this)
     });
   }
 
   salvarSistema() {
+
+    if (this.state.nome == '') {
+      this._showMessage.addNotification({message: 'Campo nome é obrigatório', level: 'warning'});
+    }
+    if (this.state.descricao == '') {
+      this._showMessage.addNotification({message: 'Campo descrição é obrigatório', level: 'warning'});
+    }
+    if (this.state.nome == '' || this.state.descricao == '') {
+      return;
+    }
+
     $.ajax({
       url:'http://localhost:7070/api/sistema',
       contentType:'application/json', dataType:'json', type:'POST',
@@ -36,10 +49,12 @@ class Sistema extends Component {
                             descricao:this.state.descricao}),
         success: function(resposta){
           console.log(resposta);
+          this._showMessage.addNotification({message: 'Sistema salvo com sucesso', level: 'success'});
           this.carregarSistemas();
           this.limpar();
         }.bind(this),
         error: function(resposta){
+          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
           console.log("erro");
         }
     });
@@ -55,7 +70,8 @@ class Sistema extends Component {
         }.bind(this),
         error: function(resposta){
           console.log("erro");
-        }
+          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
+        }.bind(this)
     });
   }
 
@@ -88,7 +104,7 @@ class Sistema extends Component {
   render() {
     return (
       <div className="App-body">
-
+          <NotificationSystem ref={n => this._showMessage = n} />
           <h3 className="page-header">Sistema</h3>
 
           <Col sm={4}>
