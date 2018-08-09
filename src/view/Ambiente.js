@@ -62,7 +62,7 @@ class Ambiente extends Component {
     var s;
     for (s in this.state.sistemas) {
       if (this.state.sistemas[s].id == Number(this.state.sistema)) {
-        this.setState({sistema:this.state.sistemas[s]});
+        this.state.sistema = this.state.sistemas[s];
       }
     }
 
