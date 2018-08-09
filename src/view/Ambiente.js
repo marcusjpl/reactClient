@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NotificationSystem from 'react-notification-system';
 import { Button, FormGroup, Form, ControlLabel, FormControl,
-  Col, Checkbox, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
+  Col, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import $ from 'jquery';
 
 class Ambiente extends Component {
@@ -9,7 +9,7 @@ class Ambiente extends Component {
   constructor() {
     super();
     this.state = {
-      ambientes: [], sistemas: [], nome:'', descricao:'', id:'', sistema:{}, sistemaId:''
+      ambientes: [], sistemas: [], nome:'', descricao:'', id:'', sistema:{id:''}
     };
     this.setNome = this.setNome.bind(this);
     this.setDescricao = this.setDescricao.bind(this);
@@ -45,6 +45,27 @@ class Ambiente extends Component {
   }
 
   salvarAmbiente() {
+
+    if (this.state.nome == '') {
+      this._showMessage.addNotification({message: 'Campo nome é obrigatório', level: 'warning'});
+    }
+    if (this.state.descricao == '') {
+      this._showMessage.addNotification({message: 'Campo descrição é obrigatório', level: 'warning'});
+    }
+    if (this.state.sistema == '' ||this.state.sistema.id == '') {
+      this._showMessage.addNotification({message: 'Campo Sistema é obrigatório', level: 'warning'});
+    }
+    if (this.state.nome == '' || this.state.descricao == '' || this.state.sistema == '' ||this.state.sistema.id == '') {
+      return;
+    }
+
+    var s;
+    for (s in this.state.sistemas) {
+      if (this.state.sistemas[s].id == Number(this.state.sistema)) {
+        this.setState({sistema:this.state.sistemas[s]});
+      }
+    }
+
     $.ajax({
       url:'http://localhost:7070/api/ambiente',
       contentType:'application/json', dataType:'json', type:'POST',
@@ -97,11 +118,11 @@ class Ambiente extends Component {
   }
 
   editar(a, evento) {
-    this.setState({id:a.id, nome:a.nome, descricao:a.descricao, sistema:a.sistema, sistemaId:a.sistema.id});
+    this.setState({id:a.id, nome:a.nome, descricao:a.descricao, sistema:a.sistema});
   }
 
   limpar() {
-    this.setState({id:'', nome:'',descricao:'',sistema:'', sistemaId:''});
+    this.setState({id:'', nome:'',descricao:'',sistema:{id:''}});
   }
 
   render() {
@@ -131,14 +152,12 @@ class Ambiente extends Component {
                     Sistema
                   </Col>
                   <Col sm={8}>
-                    <FormControl componentClass="select" placeholder="Selecionar"
-                       onChange={this.setSistema}>
+                    <FormControl componentClass="select" value={this.state.sistema.id} onChange={this.setSistema}>
+                      <option value=''> Selecionar </option>
                       {
                         this.state.sistemas.map(function(s, index){
                           return (
-                            <option key={s.id} value={index}>
-                                {s.nome}
-                            </option>
+                              <option key={index+1} value={s.id}> {s.nome} </option>
                             );
                           }.bind(this))
                       }
@@ -201,8 +220,7 @@ class Ambiente extends Component {
   }
 
   setSistema(evento){
-    this.setState({sistema:this.state.sistemas[evento.target.value],
-                  sistemaId:this.state.sistemas[evento.target.value].id});
+    this.setState({sistema:evento.target.value});
   }
 
   setNome(evento){

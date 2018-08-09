@@ -96,9 +96,7 @@ class Sistema extends Component {
   }
 
   limpar() {
-    this.setState({id:''});
-    this.setState({nome:''});
-    this.setState({descricao:''});
+    this.setState({id:'', nome:'',descricao:''});
   }
 
   render() {
