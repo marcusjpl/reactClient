@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NotificationSystem from 'react-notification-system';
 import { Button, FormGroup, Form, ControlLabel, FormControl,
-  Col, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
+  Col, Panel, Table, Glyphicon } from 'react-bootstrap';
 import $ from 'jquery';
 
 class Ambiente extends Component {
@@ -46,22 +46,22 @@ class Ambiente extends Component {
 
   salvarAmbiente() {
 
-    if (this.state.nome == '') {
+    if (this.state.nome === '') {
       this._showMessage.addNotification({message: 'Campo nome é obrigatório', level: 'warning'});
     }
-    if (this.state.descricao == '') {
+    if (this.state.descricao === '') {
       this._showMessage.addNotification({message: 'Campo descrição é obrigatório', level: 'warning'});
     }
-    if (this.state.sistema == '' ||this.state.sistema.id == '') {
+    if (this.state.sistema === '' ||this.state.sistema.id === '') {
       this._showMessage.addNotification({message: 'Campo Sistema é obrigatório', level: 'warning'});
     }
-    if (this.state.nome == '' || this.state.descricao == '' || this.state.sistema == '' ||this.state.sistema.id == '') {
+    if (this.state.nome === '' || this.state.descricao === '' || this.state.sistema === '' ||this.state.sistema.id === '') {
       return;
     }
 
     var s;
     for (s in this.state.sistemas) {
-      if (this.state.sistemas[s].id == Number(this.state.sistema)) {
+      if (this.state.sistemas[s].id === Number(this.state.sistema)) {
         this.state.sistema = this.state.sistemas[s];
       }
     }

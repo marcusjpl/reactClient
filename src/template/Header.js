@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, Badge, ButtonToolbar } from 'react-bootstrap';
 import logo from '../logo.svg';
 
-export default class Header extends React.Component {
+export default class Header extends Component {
 
     render() {
          return (
@@ -10,7 +9,7 @@ export default class Header extends React.Component {
              <div className="container-fluid">
                <div className="navbar-header">
 
-                 <a className="navbar-brand" href="#">Project name</a>
+                 <a className="navbar-brand" >Project name</a>
                  <img src={logo} className="App-logo" alt="logo"/>
 
                </div>
@@ -18,7 +17,7 @@ export default class Header extends React.Component {
                  <ul className="nav navbar-nav navbar-right">
                   {/* <li><a href="#">Settings</a></li>
                    <li><a href="#">Profile</a></li> */}
-                   <li><a href="#">Logout</a></li>
+                   <li><a>Logout</a></li>
                  </ul>
                </div>
              </div>

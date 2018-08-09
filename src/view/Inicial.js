@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
 import Hello from '../componentes/Hello';
-import $ from 'jquery';
 
 class Inicial extends Component {
   render() {

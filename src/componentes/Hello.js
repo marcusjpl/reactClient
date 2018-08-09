@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button, Badge, ButtonToolbar } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
-export default class Hello extends React.Component {
+export default class Hello extends Component {
 
     constructor(){
         super();

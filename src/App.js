@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
 import {Switch, Route} from 'react-router-dom'
 
-import $ from 'jquery';
 import './App.css';
 
-import Alerta from './componentes/Alerta';
 import Header from './template/Header';
 import Menu from './template/Menu';
 import Ambiente from './view/Ambiente';
 import Sistema from './view/Sistema';
 import Inicial from './view/Inicial';
 
-
 class App extends Component {
+
+  componentDidMount() {
+    console.log(process.env);
+  }
+
   render() {
     return (
 

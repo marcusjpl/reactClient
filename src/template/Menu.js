@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button,Glyphicon } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
-export default class Menu extends React.Component {
+export default class Menu extends Component {
 
     render() {
          return (

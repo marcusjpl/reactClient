@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NotificationSystem from 'react-notification-system';
 import { Button, FormGroup, Form, ControlLabel, FormControl,
-  Col, Checkbox, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
+  Col, Panel, Table, Glyphicon, ButtonGroup } from 'react-bootstrap';
 import $ from 'jquery';
 
 class Sistema extends Component {
@@ -16,6 +16,7 @@ class Sistema extends Component {
   }
 
   carregarSistemas() {
+    console.log(process.env);
     $.ajax({
       url: "http://localhost:7070/api/sistemas",
       dataType: 'json',
@@ -31,13 +32,13 @@ class Sistema extends Component {
 
   salvarSistema() {
 
-    if (this.state.nome == '') {
+    if (this.state.nome === '') {
       this._showMessage.addNotification({message: 'Campo nome é obrigatório', level: 'warning'});
     }
-    if (this.state.descricao == '') {
+    if (this.state.descricao === '') {
       this._showMessage.addNotification({message: 'Campo descrição é obrigatório', level: 'warning'});
     }
-    if (this.state.nome == '' || this.state.descricao == '') {
+    if (this.state.nome === '' || this.state.descricao === '') {
       return;
     }
 
