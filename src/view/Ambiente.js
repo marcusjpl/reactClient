@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 import NotificationSystem from 'react-notification-system';
 import { Button, FormGroup, Form, ControlLabel, FormControl,
   Col, Panel, Table, Glyphicon } from 'react-bootstrap';
-import $ from 'jquery';
+
+const URL = 'http://localhost:7070/api';
+
+const headers = {
+  "Content-Type": "application/json"
+};
+
 
 class Ambiente extends Component {
+
 
   constructor() {
     super();
@@ -17,31 +24,35 @@ class Ambiente extends Component {
   }
 
   carregarAmbientes() {
-    $.ajax({
-      url: "http://localhost:7070/api/ambientes",
-      dataType: 'json',
-        success: function(resposta) {
-          this.setState({ambientes: resposta});
-        }.bind(this),
-        error: function(resposta){
-          console.log("erro");
-          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
-        }.bind(this)
-    });
+    fetch(URL+"/ambientes")
+    .then(res => res.json())
+    .then(
+      (resposta) => {
+        this.setState({ ambientes: resposta });
+      }
+    )
+    .catch(
+      (error) => {
+        console.log("erro");
+        this._showMessage.addNotification({message: error.responseJSON.message, level: 'error'});
+      }
+    );
   }
 
   carregarSistemas() {
-    $.ajax({
-      url: "http://localhost:7070/api/sistemas",
-      dataType: 'json',
-        success: function(resposta) {
-          this.setState({sistemas: resposta});
-        }.bind(this),
-        error: function(resposta){
-          console.log("erro");
-          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
-        }.bind(this)
-    });
+    fetch(URL+"/sistemas")
+    .then(res => res.json())
+    .then(
+      (resposta) => {
+        this.setState({sistemas: resposta});
+      }
+    )
+    .catch(
+      (error) => {
+        console.log("erro");
+          this._showMessage.addNotification({message: error.responseJSON.message, level: 'error'});
+      }
+    );
   }
 
   salvarAmbiente() {
@@ -66,40 +77,49 @@ class Ambiente extends Component {
       }
     }
 
-    $.ajax({
-      url:'http://localhost:7070/api/ambiente',
-      contentType:'application/json', dataType:'json', type:'POST',
-      data: JSON.stringify({id:this.state.id,
-                            nome:this.state.nome,
-                            descricao:this.state.descricao,
-                            sistema:this.state.sistema}),
-        success: function(resposta){
-          console.log(resposta);
-          this.carregarAmbientes();
-          this.limpar();
-          this._showMessage.addNotification({message: 'Ambiente salvo com sucesso', level: 'success'});
-        }.bind(this),
-        error: function(resposta){
-          console.log("erro");
-          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
-        }.bind(this)
-    });
+    s = this.state.sistemas.find(e => e.id === Number(this.state.sistema))
+
+
+    fetch(URL+"/ambiente", {
+      method: "POST",
+      body: JSON.stringify({id:this.state.id,
+        nome:this.state.nome,
+        descricao:this.state.descricao,
+        sistema:this.state.sistema}), headers
+    })
+    .then(res => res.json())
+    .then(
+      (resposta) => {
+        this.carregarAmbientes();
+        this.limpar();
+        this._showMessage.addNotification({message: 'Ambiente salvo com sucesso', level: 'success'});
+      }
+    )
+    .catch(
+      (resposta) => {
+        console.log("erro");
+        this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
+      }
+    );
   }
 
   removerAmbiente(id) {
-    let urlPath = 'http://localhost:7070/api/ambiente/'+id;
-    $.ajax({
-      url: urlPath,
-      contentType:'application/json',dataType:'json',type:'DELETE',
-        success: function(resposta){
-          this.carregarAmbientes();
-          this._showMessage.addNotification({message: 'Ambiente removido com sucesso', level: 'success'});
-        }.bind(this),
-        error: function(resposta){
-          console.log("erro");
-          this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
-        }.bind(this)
-    });
+    let urlPath = URL+'/ambiente/'+id;
+    fetch(urlPath, {
+      method: "DELETE", headers
+    })
+    .then(
+      (resposta) => {
+        this.carregarAmbientes();
+        this._showMessage.addNotification({message: 'Ambiente removido com sucesso', level: 'success'});
+      }
+    )
+    .catch(
+      (resposta) => {
+        console.log("erro");
+        this._showMessage.addNotification({message: resposta.responseJSON.message, level: 'error'});
+      }
+    );
   }
 
   componentDidMount() {
@@ -157,7 +177,7 @@ class Ambiente extends Component {
                       {
                         this.state.sistemas.map(function(s, index){
                           return (
-                              <option key={index+1} value={s.id}> {s.nome} </option>
+                              <option key={index} value={s.id}> {s.nome} </option>
                             );
                           }.bind(this))
                       }
